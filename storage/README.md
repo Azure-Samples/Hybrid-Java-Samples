@@ -1,57 +1,44 @@
----
-page_type: sample
-languages:
-- java
-products:
-- azure
-description: "Azure Stack Storage sample for managing storage accounts"
-urlFragment: hybrid-storage-java-manage-storage-accounts
----
+# hybrid-storage-java-manage-storage-account
 
-# Manage hybrid storage accounts (Java)
+Azure Stack Storage sample for managing storage accounts:
 
-  Azure Stack Storage sample for managing storage accounts -
-   - Create a storage account
-   - Get | regenerate storage account access keys
-   - Create another storage account
-   - Update Storage account by enabling encryption
-   - List storage accounts
-   - Delete a storage account.
- 
+- Create a storage account
+- Get | regenerate storage account access keys
+- Create another storage account
+- List storage accounts
+- Delete a storage account
 
-## Running this Sample ##
+## Running this Sample
 
 To run this sample:
 
 1. Clone the repository using the following command:
 
-    git clone https://github.com/Azure-Samples/hybrid-storage-java-manage-storage-accounts.git
+   ```
+   $ git clone https://github.com/Azure-Samples/Hybrid-Java-Samples.git
+   ```
 
-2. Create an Azure Stack service principal and assign a role to access the subscription. For instructions on creating a service principal, see [Use Azure PowerShell to create a service principal with a certificate](https://docs.microsoft.com/en-us/azure/azure-stack/azure-stack-create-service-principals).
+2. Create an Azure service principal and assign a role to access the subscription. For instructions on creating a service principal in Azure Stack, see [Create a service principal with an application secret](https://docs.microsoft.com/en-us/azure/active-directory/develop/howto-create-service-principal-portal#option-2-create-a-new-application-secret).
 
-3. Set the following required environment variable values:
-
-    * AZURE_TENANT_ID
-
-    * AZURE_CLIENT_ID
-
-    * AZURE_CLIENT_SECRET
-
-    * AZURE_SUBSCRIPTION_ID
-
-    * ARM_ENDPOINT
-
-    * RESOURCE_LOCATION
+3. Copy the settings file `azureAppSpConfig.json.dist` to `azureAppSpConfig.json` and fill in the configuration settings from the service principal.
 
 4. Change directory to sample:
-    
-    * cd hybrid-storage-java-manage-storage-accounts
+
+   ```
+   $ cd storage
+   ```
 
 5. Run the sample:
-    * mvn clean compile exec:java
 
-## More information ##
+   ```
+   $ mvn clean compile
+   $ mvn exec:java
+   ```
 
-[http://azure.com/java](http://azure.com/java)
+## More information
+
+[Java on Azure](https://azure.microsoft.com/develop/java/)
+
+---
 
 This project has adopted the [Microsoft Open Source Code of Conduct](https://opensource.microsoft.com/codeofconduct/). For more information see the [Code of Conduct FAQ](https://opensource.microsoft.com/codeofconduct/faq/) or contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additional questions or comments.

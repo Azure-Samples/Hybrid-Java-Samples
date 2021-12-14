@@ -29,7 +29,7 @@ import java.io.IOException;
 import java.util.HashMap;
 
 /**
- * Azure Resource sample for managing resource groups -
+ * Azure Stack Resource sample for managing resource groups -
  * - Create a resource group
  * - Update a resource group
  * - Create another resource group

@@ -32,7 +32,7 @@ import java.io.IOException;
 import java.util.HashMap;
 
 /**
- * Azure Key Vault sample for managing secrets -
+ * Azure Stack Key Vault sample for managing secrets -
  * - Create a key vault
  * - Set a secret
  * - Get a secret

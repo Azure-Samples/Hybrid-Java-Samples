@@ -34,7 +34,7 @@ import java.util.HashMap;
 import java.util.List;
 
 /**
- * Azure Storage sample for managing storage accounts -
+ * Azure Stack Storage sample for managing storage accounts -
  * - Create a storage account
  * - Get | regenerate storage account access keys
  * - Create another storage account

@@ -4,7 +4,7 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.azure</groupId>
-  <artifactId>hybrid-storage-java-manage-storage-accounts</artifactId>
+  <artifactId>hybrid-storage-java-manage-storage-account</artifactId>
   <version>0.0.1-SNAPSHOT</version>
   <name>ManageStorageAccount.java</name>
   <description></description>

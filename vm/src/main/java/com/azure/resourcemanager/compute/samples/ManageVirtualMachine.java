@@ -35,7 +35,7 @@ import java.util.Date;
 import java.util.HashMap;
 
 /**
- * Azure Compute sample for managing virtual machines -
+ * Azure Stack Compute sample for managing virtual machines -
  *  - Create a virtual machine with managed OS Disk
  *  - Start a virtual machine
  *  - Stop a virtual machine
