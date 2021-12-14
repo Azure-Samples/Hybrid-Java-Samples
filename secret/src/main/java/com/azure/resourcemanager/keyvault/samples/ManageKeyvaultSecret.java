@@ -15,7 +15,7 @@ import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
-import com.azure.identity.DefaultAzureCredentialBuilder;
+import com.azure.identity.ClientSecretCredentialBuilder;
 import com.azure.resourcemanager.AzureResourceManager;
 import com.azure.resourcemanager.keyvault.models.SkuName;
 import com.azure.resourcemanager.keyvault.models.Vault;
@@ -25,7 +25,9 @@ import com.azure.security.keyvault.secrets.SecretClient;
 import com.azure.security.keyvault.secrets.SecretClientBuilder;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.HashMap;
 
@@ -176,13 +178,25 @@ public final class ManageKeyvaultSecret {
             //=============================================================
             // Authenticate
 
-            final String armEndpoint = System.getenv("ARM_ENDPOINT");
-            final String location = System.getenv("RESOURCE_LOCATION");
-            final String objectId = System.getenv("AZURE_OBJECT_ID");
+            final FileInputStream configFileStream = new FileInputStream("../azureAppSpConfig.json");
+
+            final ObjectNode settings = JacksonAdapter.createDefaultSerializerAdapter()
+                    .deserialize(configFileStream, ObjectNode.class, SerializerEncoding.JSON);
+
+            final String clientId = settings.get("clientId").asText();
+            final String clientSecret = settings.get("clientSecret").asText();
+            final String clientObjectId = settings.get("clientObjectId").asText();
+            final String subscriptionId = settings.get("subscriptionId").asText();
+            final String tenantId = settings.get("tenantId").asText();
+            final String armEndpoint = settings.get("resourceManagerUrl").asText();
+            final String location = settings.get("location").asText();
 
             // Register Azure Stack cloud environment
             final AzureProfile profile = new AzureProfile(getAzureEnvironmentFromArmEndpoint(armEndpoint));
-            final TokenCredential credential = new DefaultAzureCredentialBuilder()
+            final TokenCredential credential = new ClientSecretCredentialBuilder()
+                    .tenantId(tenantId)
+                    .clientId(clientId)
+                    .clientSecret(clientSecret)
                     .authorityHost(profile.getEnvironment().getActiveDirectoryEndpoint())
                     .build();
 
@@ -190,12 +204,13 @@ public final class ManageKeyvaultSecret {
                     .configure()
                     .withLogLevel(HttpLogDetailLevel.BASIC)
                     .authenticate(credential, profile)
-                    .withDefaultSubscription();
+                    .withTenantId(tenantId)
+                    .withSubscription(subscriptionId);
 
             // Print selected subscription
             System.out.println("Selected subscription: " + azureResourceManager.subscriptionId());
 
-            runSample(azureResourceManager, location, credential, objectId);
+            runSample(azureResourceManager, location, credential, clientObjectId);
         } catch (Exception e) {
             System.out.println(e.getMessage());
             e.printStackTrace();

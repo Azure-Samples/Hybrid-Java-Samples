@@ -19,7 +19,7 @@
         <artifactId>exec-maven-plugin</artifactId>
         <version>1.4.0</version>
         <configuration>
-          <mainClass>com.azure.resourcemanager.compute.samples.ManageStorageAccount</mainClass>
+          <mainClass>com.azure.resourcemanager.storage.samples.ManageStorageAccount</mainClass>
           <cleanupDaemonThreads>false</cleanupDaemonThreads>
         </configuration>
       </plugin>
@@ -45,7 +45,7 @@
               </descriptorRefs>
               <archive>
                 <manifest>
-                  <mainClass>com.azure.resourcemanager.compute.samples.ManageStorageAccount.java</mainClass>
+                  <mainClass>com.azure.resourcemanager.storage.samples.ManageStorageAccount.java</mainClass>
                 </manifest>
               </archive>
             </configuration>
