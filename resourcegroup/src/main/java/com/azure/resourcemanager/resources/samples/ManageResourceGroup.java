@@ -205,7 +205,7 @@ public final class ManageResourceGroup {
             runSample(azureResourceManager, location);
         } catch (Exception e) {
             System.out.println(e.getMessage());
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
     }
 }

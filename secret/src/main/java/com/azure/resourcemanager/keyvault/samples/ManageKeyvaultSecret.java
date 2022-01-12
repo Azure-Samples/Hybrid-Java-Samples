@@ -215,7 +215,7 @@ public final class ManageKeyvaultSecret {
             runSample(azureResourceManager, location, credential, clientObjectId);
         } catch (Exception e) {
             System.out.println(e.getMessage());
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
     }
 
