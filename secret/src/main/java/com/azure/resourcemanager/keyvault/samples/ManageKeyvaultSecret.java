@@ -23,6 +23,7 @@ import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.samples.Utils;
 import com.azure.security.keyvault.secrets.SecretClient;
 import com.azure.security.keyvault.secrets.SecretClientBuilder;
+import com.azure.security.keyvault.secrets.SecretServiceVersion;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -84,6 +85,7 @@ public final class ManageKeyvaultSecret {
 
             SecretClient secretClient = new SecretClientBuilder()
                     .vaultUrl(vault.vaultUri())
+                    .serviceVersion(SecretServiceVersion.V7_1)
                     .credential(tokenCredential)
                     .buildClient();
 
