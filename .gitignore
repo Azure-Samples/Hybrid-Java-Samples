@@ -3,6 +3,10 @@
 ##
 ## Get latest from https://github.com/github/gitignore/blob/master/VisualStudio.gitignore
 
+# Azure Stack configuration
+azureAppSpConfig.json
+azureCertSpConfig.json
+
 # User-specific files
 *.suo
 *.user
@@ -289,7 +293,7 @@ paket-files/
 
 # JetBrains Rider
 .idea/
-*.sln.iml
+*.iml
 
 # CodeRush
 .cr/
@@ -328,3 +332,6 @@ ASALocalRun/
 
 # MFractors (Xamarin productivity tool) working folder 
 .mfractor/
+
+# Maven target directory
+target/
