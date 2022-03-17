@@ -180,17 +180,17 @@ public final class ManageKeyvaultSecret {
             //=============================================================
             // Authenticate
 
-            final FileInputStream configFileStream = new FileInputStream("../azureAppSpConfig.json");
+            final FileInputStream configFileStream = new FileInputStream("../azureSecretSpConfig.json");
 
             final ObjectNode settings = JacksonAdapter.createDefaultSerializerAdapter()
                     .deserialize(configFileStream, ObjectNode.class, SerializerEncoding.JSON);
 
             final String clientId = settings.get("clientId").asText();
             final String clientSecret = settings.get("clientSecret").asText();
-            final String clientObjectId = settings.get("clientObjectId").asText();
+            final String objectId = settings.get("objectId").asText();
             final String subscriptionId = settings.get("subscriptionId").asText();
             final String tenantId = settings.get("tenantId").asText();
-            final String armEndpoint = settings.get("resourceManagerUrl").asText();
+            final String armEndpoint = settings.get("resourceManagerEndpointUrl").asText();
             final String location = settings.get("location").asText();
 
             // Register Azure Stack cloud environment
@@ -212,7 +212,7 @@ public final class ManageKeyvaultSecret {
             // Print selected subscription
             System.out.println("Selected subscription: " + azureResourceManager.subscriptionId());
 
-            runSample(azureResourceManager, location, credential, clientObjectId);
+            runSample(azureResourceManager, location, credential, objectId);
         } catch (Exception e) {
             System.out.println(e.getMessage());
             throw new RuntimeException(e);

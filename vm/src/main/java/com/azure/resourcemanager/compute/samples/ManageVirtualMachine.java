@@ -275,7 +275,7 @@ public final class ManageVirtualMachine {
             //=============================================================
             // Authenticate
 
-            final FileInputStream configFileStream = new FileInputStream("../azureAppSpConfig.json");
+            final FileInputStream configFileStream = new FileInputStream("../azureSecretSpConfig.json");
 
             final ObjectNode settings = JacksonAdapter.createDefaultSerializerAdapter()
                     .deserialize(configFileStream, ObjectNode.class, SerializerEncoding.JSON);
@@ -284,7 +284,7 @@ public final class ManageVirtualMachine {
             final String clientSecret = settings.get("clientSecret").asText();
             final String subscriptionId = settings.get("subscriptionId").asText();
             final String tenantId = settings.get("tenantId").asText();
-            final String armEndpoint = settings.get("resourceManagerUrl").asText();
+            final String armEndpoint = settings.get("resourceManagerEndpointUrl").asText();
             final String location = settings.get("location").asText();
 
             // Register Azure Stack cloud environment
