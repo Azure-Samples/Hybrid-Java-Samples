@@ -25,7 +25,7 @@ To run this sample:
 
 2. Create an Azure service principal and assign a role to access the subscription. For instructions on creating a service principal in Azure Stack, see [Create a service principal with an application secret](https://docs.microsoft.com/en-us/azure/active-directory/develop/howto-create-service-principal-portal#option-2-create-a-new-application-secret).
 
-3. Copy the settings file `azureAppSpConfig.json.dist` to `azureAppSpConfig.json` and fill in the configuration settings from the service principal.
+3. Copy the settings file `azureSecretSpConfig.json.dist` to `azureSecretSpConfig.json` and fill in the configuration settings from the service principal.
 
 4. Change directory to sample:
 

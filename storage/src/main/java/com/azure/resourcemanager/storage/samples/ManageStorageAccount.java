@@ -189,7 +189,7 @@ public final class ManageStorageAccount {
             //=============================================================
             // Authenticate
 
-            final FileInputStream configFileStream = new FileInputStream("../azureAppSpConfig.json");
+            final FileInputStream configFileStream = new FileInputStream("../azureSecretSpConfig.json");
 
             final ObjectNode settings = JacksonAdapter.createDefaultSerializerAdapter()
                     .deserialize(configFileStream, ObjectNode.class, SerializerEncoding.JSON);
