@@ -228,7 +228,7 @@ public final class ManageVirtualMachine {
         HttpClient httpClient = HttpClient.createDefault();
 
         HttpRequest request = new HttpRequest(HttpMethod.GET,
-                String.format("%s/metadata/endpoints?api-version=2019-10-01", armEndpoint))
+                String.format("%s/metadata/endpoints?api-version=2022-09-01", armEndpoint))
                 .setHeader("accept", "application/json");
 
         // Execute the request and read the response
@@ -294,6 +294,7 @@ public final class ManageVirtualMachine {
                     .clientId(clientId)
                     .clientSecret(clientSecret)
                     .authorityHost(profile.getEnvironment().getActiveDirectoryEndpoint())
+                    .disableInstanceDiscovery()
                     .build();
 
             AzureResourceManager azureResourceManager = AzureResourceManager

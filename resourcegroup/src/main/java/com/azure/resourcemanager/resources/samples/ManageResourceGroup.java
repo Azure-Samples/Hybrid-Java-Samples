@@ -50,73 +50,53 @@ public final class ManageResourceGroup {
         final String rgName2 = Utils.randomResourceName(azureResourceManager, "rgRSMA", 24);
         final String resourceTagName = Utils.randomResourceName(azureResourceManager, "rgRSTN", 24);
         final String resourceTagValue = Utils.randomResourceName(azureResourceManager, "rgRSTV", 24);
-        try {
+
+        //=============================================================
+        // Create resource group.
+
+        System.out.println("Creating a resource group with name: " + rgName);
+
+        ResourceGroup resourceGroup = azureResourceManager.resourceGroups().define(rgName)
+                .withRegion(location)
+                .create();
+
+        System.out.println("Created a resource group with name: " + rgName);
 
 
-            //=============================================================
-            // Create resource group.
+        //=============================================================
+        // Update the resource group.
 
-            System.out.println("Creating a resource group with name: " + rgName);
+        System.out.println("Updating the resource group with name: " + rgName);
 
-            ResourceGroup resourceGroup = azureResourceManager.resourceGroups().define(rgName)
-                    .withRegion(location)
-                    .create();
+        resourceGroup.update()
+                .withTag(resourceTagName, resourceTagValue)
+                .apply();
 
-            System.out.println("Created a resource group with name: " + rgName);
-
-
-            //=============================================================
-            // Update the resource group.
-
-            System.out.println("Updating the resource group with name: " + rgName);
-
-            resourceGroup.update()
-                    .withTag(resourceTagName, resourceTagValue)
-                    .apply();
-
-            System.out.println("Updated the resource group with name: " + rgName);
+        System.out.println("Updated the resource group with name: " + rgName);
 
 
-            //=============================================================
-            // Create another resource group.
+        //=============================================================
+        // Create another resource group.
 
-            System.out.println("Creating another resource group with name: " + rgName2);
+        System.out.println("Creating another resource group with name: " + rgName2);
 
-            azureResourceManager.resourceGroups().define(rgName2)
-                    .withRegion(location)
-                    .create();
+        azureResourceManager.resourceGroups().define(rgName2)
+                .withRegion(location)
+                .create();
 
-            System.out.println("Created another resource group with name: " + rgName2);
-
-
-            //=============================================================
-            // List resource groups.
-
-            System.out.println("Listing all resource groups");
-
-            for (ResourceGroup rGroup : azureResourceManager.resourceGroups().list()) {
-                System.out.println("Resource group: " + rGroup.name());
-            }
+        System.out.println("Created another resource group with name: " + rgName2);
 
 
-            //=============================================================
-            // Delete a resource group.
+        //=============================================================
+        // List resource groups.
 
-            System.out.println("Deleting resource group: " + rgName2);
+        System.out.println("Listing all resource groups");
 
-            azureResourceManager.resourceGroups().beginDeleteByName(rgName2);
-            return true;
-        } finally {
-
-            try {
-                System.out.println("Deleting Resource Group: " + rgName);
-                azureResourceManager.resourceGroups().beginDeleteByName(rgName);
-            } catch (NullPointerException npe) {
-                System.out.println("Did not create any resources in Azure. No clean up is necessary");
-            } catch (Exception g) {
-                g.printStackTrace();
-            }
+        for (ResourceGroup rGroup : azureResourceManager.resourceGroups().list()) {
+            System.out.println("Resource group: " + rGroup.name());
         }
+
+        return true;
     }
 
     private static AzureEnvironment getAzureEnvironmentFromArmEndpoint(String armEndpoint) {
@@ -124,7 +104,7 @@ public final class ManageResourceGroup {
         HttpClient httpClient = HttpClient.createDefault();
 
         HttpRequest request = new HttpRequest(HttpMethod.GET,
-                String.format("%s/metadata/endpoints?api-version=2019-10-01", armEndpoint))
+                String.format("%s/metadata/endpoints?api-version=2022-09-01", armEndpoint))
                 .setHeader("accept", "application/json");
 
         // Execute the request and read the response
@@ -134,14 +114,13 @@ public final class ManageResourceGroup {
         }
         String body = response.getBodyAsString().block();
         try {
-            ArrayNode metadataArray = JacksonAdapter.createDefaultSerializerAdapter()
-                    .deserialize(body, ArrayNode.class, SerializerEncoding.JSON);
+            JsonNode metadata = JacksonAdapter.createDefaultSerializerAdapter()
+                    .deserialize(body, JsonNode.class, SerializerEncoding.JSON);
 
-            if (metadataArray == null || metadataArray.isEmpty()) {
+            if (metadata == null || metadata.isEmpty()) {
                 throw new RuntimeException("Failed to find metadata : " + body);
             }
 
-            JsonNode metadata = metadataArray.iterator().next();
             AzureEnvironment azureEnvironment = new AzureEnvironment(new HashMap<String, String>() {
                 {
                     put("managementEndpointUrl", metadata.at("/authentication/audiences/0").asText());
@@ -152,6 +131,7 @@ public final class ManageResourceGroup {
                     put("activeDirectoryGraphResourceId", metadata.at("/graph").asText());
                     put("storageEndpointSuffix", "." + metadata.at("/suffixes/storage").asText());
                     put("keyVaultDnsSuffix", "." + metadata.at("/suffixes/keyVaultDns").asText());
+                    put("microsoftGraphResourceId", "." + metadata.at("/microsoftGraphResourceId").asText());
                 }
             });
             return azureEnvironment;
@@ -163,8 +143,8 @@ public final class ManageResourceGroup {
 
     /**
      * Main entry point.
-     * @param args the parameters
-     */
+    * @param args the parameters
+    */
     public static void main(String[] args) {
         try {
 
@@ -190,6 +170,7 @@ public final class ManageResourceGroup {
                     .clientId(clientId)
                     .clientSecret(clientSecret)
                     .authorityHost(profile.getEnvironment().getActiveDirectoryEndpoint())
+                    .disableInstanceDiscovery()
                     .build();
 
             AzureResourceManager azureResourceManager = AzureResourceManager
